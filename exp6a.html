@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAKE SHOP</title>
+    <!-- Embedded CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            background-color: #8B0000; /* Dark Red */
+            color: white;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .cake-display {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .cake-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 15px;
+            text-align: center;
+            width: 200px;
+        }
+
+        .cake-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .cake-item p {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .order-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 20px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .order-form label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .order-form input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        #place-order-btn {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        #place-order-btn:hover {
+            background-color: #45a049;
+        }
+
+        .bill-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .bill-section h3 {
+            color: #8B0000;
+        }
+
+        .bill-section #total-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #008000; /* Darker Green */
+        }
+    </style>
+    <!-- Link to jQuery from CDN (still needed as it's an external library) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>CAKE SHOP</h1>
+    </div>
+
+    <div class="cake-display">
+        <div class="cake-item">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9gbENA1qH4UzRTSXzp0196ZkfIXB5H7vsWw&s" alt="Rainbow Cake">
+            <p>Rainbow Cake - Rs. <span class="price" data-price="300">300</span></p>
+        </div>
+        <div class="cake-item">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR85lWkiukNXZ-PQJN4v_uoIN-Oya6cpRqwfw&s" alt="Chocolate Cake">
+            <p>Chocolate Cake - Rs. <span class="price" data-price="200">200</span></p>
+        </div>
+        <div class="cake-item">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrw5Aqhuo-gAqBJp9HsA1NUUcAUIYE76EPIA&s" alt="Red Velvet Cake">
+            <p>Red Velvet Cake - Rs. <span class="price" data-price="250">250</span></p>
+        </div>
+        <div class="cake-item">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnOaN8DA26-wGTAOVGXVwO3g5bDI6BsLO7Uw&s" alt="Black Forest Cake">
+            <p>Black Forest Cake - Rs. <span class="price" data-price="350">350</span></p>
+        </div>
+    </div>
+
+    <div class="order-section">
+        <h2>Order Cake</h2>
+        <div class="order-form">
+            <label for="rainbow-qty">Rainbow Cake (Quantity)</label>
+            <input type="number" id="rainbow-qty" value="0" min="0">
+
+            <label for="chocolate-qty">Chocolate Cake (Quantity)</label>
+            <input type="number" id="chocolate-qty" value="0" min="0">
+
+            <label for="redvelvet-qty">Red Velvet Cake (Quantity)</label>
+            <input type="number" id="redvelvet-qty" value="0" min="0">
+
+            <label for="blackforest-qty">Black Forest Cake (Quantity)</label>
+            <input type="number" id="blackforest-qty" value="0" min="0">
+
+            <button id="place-order-btn">Place Order</button>
+        </div>
+
+        <div class="bill-section">
+            <h3>Purchase Order Bill!!</h3>
+            <p>Total Price: Rs. <span id="total-price">0</span></p>
+        </div>
+    </div>
+
+    <!-- Embedded JavaScript (jQuery) -->
+    <script>
+        $(document).ready(function() {
+            $('#place-order-btn').click(function() {
+                let totalPrice = 0;
+
+                // Get quantity and price for Rainbow Cake
+                const rainbowQty = parseInt($('#rainbow-qty').val());
+                // Using a more robust way to get price by id or a specific class to avoid relying on :nth-child
+                const rainbowPrice = parseInt($('.cake-item:has(img[alt="Rainbow Cake"]) .price').data('price'));
+                totalPrice += rainbowQty * rainbowPrice;
+
+                // Get quantity and price for Chocolate Cake
+                const chocolateQty = parseInt($('#chocolate-qty').val());
+                const chocolatePrice = parseInt($('.cake-item:has(img[alt="Chocolate Cake"]) .price').data('price'));
+                totalPrice += chocolateQty * chocolatePrice;
+
+                // Get quantity and price for Red Velvet Cake
+                const redvelvetQty = parseInt($('#redvelvet-qty').val());
+                const redvelvetPrice = parseInt($('.cake-item:has(img[alt="Red Velvet Cake"]) .price').data('price'));
+                totalPrice += redvelvetQty * redvelvetPrice;
+
+                // Get quantity and price for Black Forest Cake
+                const blackforestQty = parseInt($('#blackforest-qty').val());
+                const blackforestPrice = parseInt($('.cake-item:has(img[alt="Black Forest Cake"]) .price').data('price'));
+                totalPrice += blackforestQty * blackforestPrice;
+
+                // Update the total price displayed
+                $('#total-price').text(totalPrice);
+            });
+        });
+    </script>
+</body>
+</html>
